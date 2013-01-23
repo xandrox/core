@@ -223,6 +223,7 @@
 		<module-def name="org.apache.httpcomponents">
 			<maven-resource group="org.apache.httpcomponents" artifact="httpclient" />
 			<maven-resource group="org.apache.httpcomponents" artifact="httpcore" />
+			<maven-resource group="org.apache.httpcomponents" artifact="fluent-hc" />
 		</module-def>
 
 		<module-def name="org.apache.log4j">

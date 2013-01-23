@@ -71,7 +71,7 @@
       <cal10n.version>0.7.2</cal10n.version>
       <cdi.version>1.0-SP4</cdi.version>
       <groovy.version>1.7.5</groovy.version>
-      <httpclient.version>4.0.1</httpclient.version>
+      <httpclient.version>4.2.1</httpclient.version>
       <commonscodec.version>1.6</commonscodec.version>
       <jansi.version>1.5</jansi.version>
       <jboss.javaee.version>3.0.1.Final</jboss.javaee.version>
@@ -139,6 +139,12 @@
             <artifactId>httpclient</artifactId>
             <version>${httpclient.version}</version>
          </dependency>
+         
+         <dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
 
          <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -581,7 +587,7 @@
                      <version>[3.0,4.0)</version>
                   </requireMavenVersion>
                   <requireJavaVersion>
-                     <version>[1.6.0-30,1.7)</version>
+                     <version>[1.6.0-30,1.7.0,)</version>
                   </requireJavaVersion>
                </rules>
             </configuration>
