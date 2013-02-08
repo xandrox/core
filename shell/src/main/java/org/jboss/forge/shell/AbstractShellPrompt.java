@@ -9,10 +9,14 @@ package org.jboss.forge.shell;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.enterprise.inject.spi.BeanManager;
 
@@ -370,8 +374,27 @@ public abstract class AbstractShellPrompt implements Shell
    public <T> T promptChoice(final String message, final Map<String, T> options)
    {
       println(message);
-      List<Entry<String, T>> entries = new ArrayList<Map.Entry<String, T>>();
+      final List<Entry<String, T>> entries = new ArrayList<Map.Entry<String, T>>();
       entries.addAll(options.entrySet());
+
+      //very like StringsCompleter
+      class ChoiceCompleter implements Completer
+      {
+         final SortedSet<String> keys = new TreeSet<String>(options.keySet());
+
+         @Override
+         public int complete(String buffer, int cursor, List<CharSequence> candidates)
+         {
+            for (String s : keys.tailSet(buffer)) {
+               if (!s.startsWith(buffer))
+               {
+                  break;
+               }
+               candidates.add(s);
+            }
+            return candidates.isEmpty() ? -1 : 0;
+         }
+      }
 
       Object result = InvalidInput.INSTANCE;
       while (result instanceof InvalidInput)
@@ -384,7 +407,8 @@ public abstract class AbstractShellPrompt implements Shell
             count++;
          }
          println();
-         String input = prompt("Choose an option by typing the name or number of the selection: ");
+         String input = promptWithCompleter("Choose an option by typing the name or number of the selection: ",
+                  new ChoiceCompleter());
          if (options.containsKey(input))
          {
             result = options.get(input);
@@ -602,4 +626,44 @@ public abstract class AbstractShellPrompt implements Shell
       return secret;
    }
 
+   @Override
+   public <T> Set<T> promptMultiSelect(String message, Set<T> options)
+   {
+      return promptMultiSelectWithWildcard(null, message, options);
+   }
+
+   @Override
+   public <T> Set<T> promptMultiSelectWithWildcard(String wildcard, String message, Set<T> options)
+   {
+      final Map<String, T> optionMap = new LinkedHashMap<String, T>();
+      for (T t : options)
+      {
+         if (t == null)
+         {
+            throw new IllegalArgumentException("null values not allowed");
+         }
+         // use #name() for enums, which may not be the same as #toString()
+         optionMap.put(t.getClass().isEnum() ? ((Enum<?>) t).name() : t.toString(), t);
+      }
+      return promptMultiSelectWithWildcard(wildcard, message, optionMap);
+   }
+
+   @Override
+   public <T> Set<T> promptMultiSelect(String message, Map<String, T> options)
+   {
+      return promptMultiSelectWithWildcard(null, message, options);
+   }
+
+   @Override
+   public <T> Set<T> promptMultiSelect(String message, T... options)
+   {
+      return promptMultiSelect(message, new LinkedHashSet<T>(Arrays.asList(options)));
+   }
+   
+   @Override
+   public <T> Set<T> promptMultiSelectWithWildcard(String wildcard, String message, T... options)
+   {
+      return promptMultiSelectWithWildcard(wildcard, message, new LinkedHashSet<T>(Arrays.asList(options)));
+   }
+   
 }

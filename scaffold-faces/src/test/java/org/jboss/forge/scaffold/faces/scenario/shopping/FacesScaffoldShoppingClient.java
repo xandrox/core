@@ -6,7 +6,8 @@
  */
 package org.jboss.forge.scaffold.faces.scenario.shopping;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.jsfunit.api.InitialPage;
 import org.jboss.jsfunit.api.JSFUnitResource;
@@ -99,7 +100,7 @@ public class FacesScaffoldShoppingClient
                   .setSelectedAttribute("2", true);
          page = page.getHtmlElementById("create:customerBeanCustomerOrders:customerBeanCustomerOrdersAdd").click();
          table = (HtmlTable) page.getHtmlElementById("create:customerBeanCustomerOrders");
-         assertEquals("Address Street #2 Address City #2 0", table.getCellAt(2, 0).getTextContent());
+         assertEquals("Address street: Address Street #2, City: Address City #2, zipCode: 0", table.getCellAt(2, 0).getTextContent());
 
          // Test adding multiple OneToMany (mappedBy) before clicking Save
 
@@ -108,8 +109,8 @@ public class FacesScaffoldShoppingClient
                   .setSelectedAttribute("3", true);
          page = page.getHtmlElementById("create:customerBeanCustomerOrders:customerBeanCustomerOrdersAdd").click();
          table = (HtmlTable) page.getHtmlElementById("create:customerBeanCustomerOrders");
-         assertTrue( "Address Street #2 Address City #2 0".equals(table.getCellAt(2, 0).getTextContent()) || "Address Street #3 Address City #3 0".equals(table.getCellAt(2, 0).getTextContent() ));
-         assertTrue( "Address Street #2 Address City #2 0".equals(table.getCellAt(3, 0).getTextContent()) || "Address Street #3 Address City #3 0".equals(table.getCellAt(3, 0).getTextContent() ));
+         assertTrue( "Address street: Address Street #2, City: Address City #2, zipCode: 0".equals(table.getCellAt(2, 0).getTextContent()) || "Address street: Address Street #3, City: Address City #3, zipCode: 0".equals(table.getCellAt(2, 0).getTextContent() ));
+         assertTrue( "Address street: Address Street #2, City: Address City #2, zipCode: 0".equals(table.getCellAt(3, 0).getTextContent()) || "Address street: Address Street #3, City: Address City #3, zipCode: 0".equals(table.getCellAt(3, 0).getTextContent() ));
          assertTrue(!table.getCellAt(2, 0).getTextContent().equals(table.getCellAt(3, 0).getTextContent()));
 
          page = page.getAnchorByText("Save").click();
@@ -127,8 +128,8 @@ public class FacesScaffoldShoppingClient
          table = (HtmlTable) page.getHtmlElementById("customerBeanCustomerAddresses");
          assertEquals("Address Street #1", table.getCellAt(1, 0).getTextContent());
          table = (HtmlTable) page.getHtmlElementById("customerBeanCustomerOrders");
-         assertTrue( "Address Street #2 Address City #2 0".equals(table.getCellAt(1, 0).getTextContent()) || "Address Street #3 Address City #3 0".equals(table.getCellAt(1, 0).getTextContent() ));
-         assertTrue( "Address Street #2 Address City #2 0".equals(table.getCellAt(2, 0).getTextContent()) || "Address Street #3 Address City #3 0".equals(table.getCellAt(2, 0).getTextContent() ));
+         assertTrue( "Address street: Address Street #2, City: Address City #2, zipCode: 0".equals(table.getCellAt(1, 0).getTextContent()) || "Address street: Address Street #3, City: Address City #3, zipCode: 0".equals(table.getCellAt(1, 0).getTextContent() ));
+         assertTrue( "Address street: Address Street #2, City: Address City #2, zipCode: 0".equals(table.getCellAt(2, 0).getTextContent()) || "Address street: Address Street #3, City: Address City #3, zipCode: 0".equals(table.getCellAt(2, 0).getTextContent() ));
          assertTrue(!table.getCellAt(1, 0).getTextContent().equals(table.getCellAt(2, 0).getTextContent()));
 
          // Test foreign key constraints

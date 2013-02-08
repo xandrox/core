@@ -91,11 +91,11 @@ public class JavaParserImpl implements JavaParserProvider
    public JavaSource<?> parse(final String data)
    {
       Document document = new Document(data);
-      ASTParser parser = ASTParser.newParser(AST.JLS3);
+      ASTParser parser = ASTParser.newParser(AST.JLS4);
 
       parser.setSource(document.get().toCharArray());
       Map options = JavaCore.getOptions();
-      options.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_1_5);
+      options.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_1_7);
       options.put(CompilerOptions.OPTION_Encoding, "UTF-8");
       parser.setCompilerOptions(options);
 
@@ -118,7 +118,7 @@ public class JavaParserImpl implements JavaParserProvider
 
    /**
     * Create a {@link JavaSource} instance from the given {@link Document}, {@link CompilationUnit},
-    * {@link TypeDeclaration}, and enclosing {@link JavaSource} type. 
+    * {@link TypeDeclaration}, and enclosing {@link JavaSource} type.
     */
    public static JavaSource<?> getJavaSource(JavaSource<?> enclosingType, Document document, CompilationUnit unit,
             BodyDeclaration declaration)
